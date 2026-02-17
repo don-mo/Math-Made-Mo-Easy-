@@ -1,7 +1,202 @@
 <!DOCTYPE html>
-<html>
-  <body>
-    <p1>Welcome to my website!</p1>
-    <p>My thirtieth website</p>
-  </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moswimming Employee Training Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏊 Moswimming Training Tracker</h1>
+            <p class="subtitle">Employee Video & Quiz Management System</p>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+            <button class="tab-btn" data-tab="employees">Employees</button>
+            <button class="tab-btn" data-tab="videos">Videos</button>
+            <button class="tab-btn" data-tab="quiz">Quiz</button>
+            <button class="tab-btn" data-tab="reports">Reports</button>
+        </nav>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Employees</h3>
+                    <p class="stat-number" id="totalEmployees">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Videos Completed This Week</h3>
+                    <p class="stat-number" id="videosCompleted">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Quizzes Completed</h3>
+                    <p class="stat-number" id="quizzesCompleted">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Average Quiz Score</h3>
+                    <p class="stat-number" id="avgScore">0%</p>
+                </div>
+            </div>
+
+            <div class="recent-activity">
+                <h2>Recent Activity</h2>
+                <div id="activityLog"></div>
+            </div>
+        </div>
+
+        <!-- Employees Tab -->
+        <div id="employees" class="tab-content">
+            <div class="section-header">
+                <h2>Employee Management</h2>
+                <button class="btn btn-primary" id="addEmployeeBtn">+ Add Employee</button>
+            </div>
+
+            <div id="employeeList" class="employee-grid"></div>
+
+            <!-- Add Employee Modal -->
+            <div id="addEmployeeModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Add New Employee</h2>
+                    <form id="addEmployeeForm">
+                        <input type="text" id="employeeName" placeholder="Employee Name" required>
+                        <input type="email" id="employeeEmail" placeholder="Email" required>
+                        <button type="submit" class="btn btn-primary">Add Employee</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Videos Tab -->
+        <div id="videos" class="tab-content">
+            <h2>Training Videos</h2>
+            <p class="info-text">Track which employees have watched each video this week</p>
+            
+            <div class="week-selector">
+                <button id="prevWeek" class="btn btn-secondary">← Previous Week</button>
+                <span id="currentWeek" class="week-display"></span>
+                <button id="nextWeek" class="btn btn-secondary">Next Week →</button>
+            </div>
+
+            <div class="video-tracking">
+                <div class="video-card">
+                    <h3>Freestyle</h3>
+                    <a href="https://www.youtube.com/watch?v=44Z903gdVqI" target="_blank" class="video-link">
+                        Watch Video →
+                    </a>
+                    <div class="employee-checklist" id="freestyle-checklist"></div>
+                </div>
+
+                <div class="video-card">
+                    <h3>Backstroke</h3>
+                    <a href="https://www.youtube.com/watch?v=feDQPi7hz1U" target="_blank" class="video-link">
+                        Watch Video →
+                    </a>
+                    <div class="employee-checklist" id="backstroke-checklist"></div>
+                </div>
+
+                <div class="video-card">
+                    <h3>Breaststroke</h3>
+                    <a href="https://www.youtube.com/watch?v=S3Ja0mHZDSg" target="_blank" class="video-link">
+                        Watch Video →
+                    </a>
+                    <div class="employee-checklist" id="breaststroke-checklist"></div>
+                </div>
+
+                <div class="video-card">
+                    <h3>Butterfly</h3>
+                    <a href="https://www.youtube.com/watch?v=9gs2_YEUkaM" target="_blank" class="video-link">
+                        Watch Video →
+                    </a>
+                    <div class="employee-checklist" id="butterfly-checklist"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Tab -->
+        <div id="quiz" class="tab-content">
+            <div class="quiz-section">
+                <h2>Employee Training Quiz</h2>
+                
+                <div class="quiz-setup">
+                    <label for="quizEmployee">Select Employee:</label>
+                    <select id="quizEmployee" class="select-dropdown">
+                        <option value="">Choose an employee...</option>
+                    </select>
+                    <button id="startQuiz" class="btn btn-primary">Start Quiz</button>
+                </div>
+
+                <div id="quizContainer" class="quiz-container" style="display: none;">
+                    <div id="quizProgress" class="progress-bar">
+                        <div id="quizProgressFill" class="progress-fill"></div>
+                    </div>
+                    <div id="quizQuestion"></div>
+                    <div id="quizOptions"></div>
+                    <button id="submitAnswer" class="btn btn-primary">Submit Answer</button>
+                </div>
+
+                <div id="quizResults" class="quiz-results" style="display: none;">
+                    <h3>Quiz Complete!</h3>
+                    <p class="result-score"></p>
+                    <div class="result-details"></div>
+                    <button id="retakeQuiz" class="btn btn-secondary">Take Another Quiz</button>
+                </div>
+            </div>
+
+            <div class="quiz-management">
+                <h3>Quiz Questions</h3>
+                <button class="btn btn-primary" id="addQuestionBtn">+ Add Question</button>
+                <div id="questionList"></div>
+            </div>
+
+            <!-- Add Question Modal -->
+            <div id="addQuestionModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Add Quiz Question</h2>
+                    <form id="addQuestionForm">
+                        <input type="text" id="questionText" placeholder="Question" required>
+                        <input type="text" id="option1" placeholder="Option 1 (Correct Answer)" required>
+                        <input type="text" id="option2" placeholder="Option 2" required>
+                        <input type="text" id="option3" placeholder="Option 3" required>
+                        <input type="text" id="option4" placeholder="Option 4" required>
+                        <select id="questionCategory" class="select-dropdown">
+                            <option value="freestyle">Freestyle</option>
+                            <option value="backstroke">Backstroke</option>
+                            <option value="breaststroke">Breaststroke</option>
+                            <option value="butterfly">Butterfly</option>
+                            <option value="general">General</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">Add Question</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reports" class="tab-content">
+            <h2>Training Reports</h2>
+            
+            <div class="report-filters">
+                <select id="reportEmployee" class="select-dropdown">
+                    <option value="all">All Employees</option>
+                </select>
+                <select id="reportPeriod" class="select-dropdown">
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="all">All Time</option>
+                </select>
+                <button id="generateReport" class="btn btn-primary">Generate Report</button>
+            </div>
+
+            <div id="reportContent" class="report-content"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
 </html>
